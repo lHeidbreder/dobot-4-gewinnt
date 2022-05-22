@@ -2,5 +2,9 @@ import sys
 sys.path.append('./lib')
 sys.path.append('./src')
 
-import Vorlage_Python_Dobot
-import Vorlage_Python_Dobot_2
+from src.Wrapper import Wrapper
+
+Dobot1 = Wrapper(0, "COM6")
+Dobot2 = Wrapper(1, "COM7")
+
+Dobot1.Disconnect()

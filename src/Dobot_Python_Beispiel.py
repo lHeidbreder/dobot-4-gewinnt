@@ -24,8 +24,8 @@ if (state1 == dobot1.DobotConnect.DobotConnect_NoError):
     print("Setting up Command Queue")
     dobot1.SetQueuedCmdClear(api1)                        #Clean Command Queued
     dobot1.SetQueuedCmdStartExec(api1)                    #Befehlswarteschlange starten
-    dobot1.SetPTPCmdEx(api1, 0, 193,  0,  23, -0.264, 1)      #optional Jump-Befehl zur absoluten Koordinate zu Beginn
-    dobot1.dSleep(100)                                   #Verzögerungszeit wird benötigt, um Befehl auszuführen
+    dobot1.SetPTPCmdEx(api1, 0, 193,  0,  23, -0.264, 1)  #optional Jump-Befehl zur absoluten Koordinate zu Beginn
+    dobot1.dSleep(100)                                    #Verzögerungszeit wird benötigt, um Befehl auszuführen
     
     print("Homing")
     dobot1.SetHOMEParams(api1, 250, 0, 50, 0, isQueued = 1)
