@@ -32,7 +32,7 @@ class Wrapper:
 			self.DobotDLL.SetQueuedCmdStartExec(self.DobotAPI)                    #Befehlswarteschlange starten
 
 			#print("Setting up line mode")
-			#self.DobotDLL.SetDeviceWithL(self.DobotAPI)   #Danach kommt ein bool(?) als param
+			#self.DobotDLL.SetDeviceWithL(self.DobotAPI, True)   #Danach kommt ein bool(?) als param
 
 
 	def Home(self):
