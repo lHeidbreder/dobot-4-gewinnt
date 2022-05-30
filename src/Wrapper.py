@@ -116,10 +116,13 @@ class Wrapper:
 	
 
 	def SetSuckState(self, state: bool) -> None:
-		conv_state = 0
-		if (state):
-			conv_state = 1
-		self.DobotDLL.SetEndEffectorSuctionCupEx(self.DobotAPI, 1, conv_state)
+		if (self.__isConnected == self.DobotDLL.DobotConnect.DobotConnect_NoError):
+			conv_state = 0
+			if (state):
+				conv_state = 1
+			self.DobotDLL.SetEndEffectorSuctionCupEx(self.DobotAPI, 1, conv_state)
+		else:
+			print("Dobot not conncted! Can't set suck state.")
 		pass
 
 
