@@ -71,7 +71,7 @@ class Game:
     def run_game(self) -> None:
         victor = 0
         while victor==0:
-            col:int = self.players[0].getNextTurn(self.gamestate)
+            col:int = self.players[0].getNextTurn(1, self.gamestate)
 
             row = self.gamestate[col].index(0)
             self.gamestate[col][row] = 1
@@ -81,7 +81,7 @@ class Game:
             if victor != 0:
                 break
 
-            col:int = self.players[1].getNextTurn(self.gamestate)
+            col:int = self.players[1].getNextTurn(2, self.gamestate)
 
             row = self.gamestate[col].index(0)
             self.gamestate[col][row] = 2
