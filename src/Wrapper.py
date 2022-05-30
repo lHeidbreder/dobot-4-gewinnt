@@ -6,11 +6,11 @@ class Wrapper:
 	__rowAmount = 7
 	__isConnected = False
 
-	__moveHeight = 100
+	__moveHeight = 125
 	__homeX = 60
 	__homeY = -240
 	__homeZ = 0
-	__cubeZ = -80
+	__cubeZ = -57.2505
 
 	__xCoordinatesOfColumns = {
 		0: 200,
@@ -40,13 +40,13 @@ class Wrapper:
 		6: 220
 	}
 	__zCoordinatesOfColumns = {
-		0: -98,
-		1: -73,
-		2: -48,
-		3: -23,
-		4: 2,
-		5: 27,
-		6: 52
+		0: -55,
+		1: -30,
+		2: -5,
+		3: 20,
+		4: 45,
+		5: 70,
+		6: 95
 	}
 
 	def __init__(self, playerID: int, comPort: str):
