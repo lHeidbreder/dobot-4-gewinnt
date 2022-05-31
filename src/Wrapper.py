@@ -10,7 +10,7 @@ class Wrapper:
 	__homeX = 60
 	__homeY = -240
 	__homeZ = 0
-	__cubeZ = -57.2505
+	__cubeZ = -52.2505
 
 	__xCoordinatesOfColumns = {
 		0: 200,
@@ -21,35 +21,36 @@ class Wrapper:
 		5: 200,
 		6: 200
 	}
-	__yCorrdinatesOfColumns = {
-		0: -220,
-		1: -100,
-		2: -40,
-		3: 0,
-		4: 40,
-		5: 100,
-		6: 220
-	}
 	__yCorrdinatesOfColumns_mirrored = {
-		0: -220,
-		1: -100,
-		2: -40,
+		0: 220,
+		1: 100,
+		2: 40,
 		3: 0,
-		4: 40,
-		5: 100,
-		6: 220
+		4: -40,
+		5: -100,
+		6: -220
 	}
 	__zCoordinatesOfColumns = {
-		0: -55,
-		1: -30,
-		2: -5,
-		3: 20,
-		4: 45,
-		5: 70,
-		6: 95
+		0: -50,
+		1: -25,
+		2: 0,
+		3: 25,
+		4: 50,
+		5: 75,
+		6: 100
 	}
 
 	def __init__(self, playerID: int, comPort: str):
+		self.__yCorrdinatesOfColumns = {
+		0: -220,
+		1: -100,
+		2: -40,
+		3: 0,
+		4: 40,
+		5: 100,
+		6: 220
+		}
+
 		self.__DobotID = playerID
 
 		if playerID == 0:
@@ -79,7 +80,7 @@ class Wrapper:
 			#Befehlswarteschlange starten
 			self.DobotDLL.SetQueuedCmdStartExec(self.DobotAPI)
 			#Bring Dobot to starting position
-			self.Home()
+#			self.Home()
 			self.MoveTo(self.__homeX, self.__homeY, self.__homeZ)
 		pass
 
@@ -95,10 +96,10 @@ class Wrapper:
 		pass
 
 
-	def MoveTo(self, x: int, y: int, z: int, r: int=0):
+	def MoveTo(self, x: int, y: int, z: int, r=0):
 		if (self.__isConnected == self.DobotDLL.DobotConnect.DobotConnect_NoError):
 			print("Moving Dobot", self.__DobotID, "to coordinates", x, y, z, r)
-			self.DobotDLL.SetPTPCmdEx(self.DobotDLL, 1, x, y, z, r, isQueued=1)
+			self.DobotDLL.SetPTPCmdEx(self.DobotAPI, 1, x, y, z, r, isQueued=1)
 			self.WaitForMotionComplete()
 		else:
 			print("Dobot not conncted! Can't move.")

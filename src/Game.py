@@ -15,8 +15,8 @@ class Game:
 
         self.players.append(Controller.getController(sys.argv[1]))
         self.players.append(Controller.getController(sys.argv[2]))
-        self.__robots.append(Wrapper(1, "COM6"))
-        self.__robots.append(Wrapper(2, "COM7"))
+        self.__robots.append(Wrapper(0, "COM6"))
+        self.__robots.append(Wrapper(1, "COM8"))
 
         l = []
         for i in range(7):

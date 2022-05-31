@@ -2,13 +2,10 @@ import sys
 sys.path.append('./lib')
 sys.path.append('./src')
 
-from src.Wrapper import Wrapper
+from Game import Game
 
-Dobot1 = Wrapper(0, "COM6")
-Dobot2 = Wrapper(1, "COM8")
+if __name__=='__main__':
+	game = Game()
 
-Dobot1.MoveBlock(2, 0)
-Dobot2.MoveBlock(4, 5)
-
-Dobot1.Disconnect()
-Dobot2.Disconnect()
+	game.initialize()
+	game.run_game()
