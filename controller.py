@@ -126,7 +126,8 @@ class GUIController(Controller):
         if event == str(j):
           column = j
           #print(i)    #wrapper Move Methode hier
-          textFields[j](str(int(textFields[j].get()) + 1))
+          if int(textFields[j].get()) < 6:
+            textFields[j](str(int(textFields[j].get()) + 1))
           for i in range(6):
             if gameboard[5-i][j].Widget['background'] == "white":
               gameboard[5-i][j].update(background_color= color_map[playerId])
@@ -144,7 +145,6 @@ if __name__ == '__main__':
   state = []
   for i in range (7):
     state.append([])
-  
   #while True:
     #print(controller.getNextTurn(state))
    # controller.WaitButtonClicked()
