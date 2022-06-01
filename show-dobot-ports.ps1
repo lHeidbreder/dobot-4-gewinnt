@@ -1,0 +1,1 @@
+Get-PnpDevice -Presentonly | Select-String -Pattern '10C4'

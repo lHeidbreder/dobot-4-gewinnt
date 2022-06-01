@@ -18,6 +18,12 @@ class Controller:
   def __init__(self):
     pass
   
+  @staticmethod
+  def getController(name:str):
+    if name == 'ai':
+      raise NotImplementedError('There is no AIController implemented yet')
+    return GUIController(name)
+
   def getName(self) -> str:
     '''Return this Controller's name'''
     raise NotImplementedError()

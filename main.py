@@ -2,5 +2,10 @@ import sys
 sys.path.append('./lib')
 sys.path.append('./src')
 
-import Vorlage_Python_Dobot
-import Vorlage_Python_Dobot_2
+from Game import Game
+
+if __name__=='__main__':
+	game = Game()
+
+	game.initialize()
+	game.run_game()
