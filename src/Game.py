@@ -1,6 +1,6 @@
 import sys
 import typing
-from Controller import Controller
+from controller import Controller
 from Wrapper import Wrapper
 
 class Game:
