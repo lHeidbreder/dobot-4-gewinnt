@@ -1,4 +1,5 @@
 # Vier Gewinnt Minimax
+from ast import Pass
 from pickle import NONE
 from typing import List
 from random import randint
@@ -81,8 +82,13 @@ class GUIController(Controller):
   
   def getNextTurn(self, playerId, gamestate: List[List[int]]) -> int:
     #TODO
-    self.window.__updateState(gamestate)
+    self.window.updateState(gamestate)
     return self.window.WaitButtonClicked(playerId)
+  
+  def informEnd(self, victor):
+    sg.Popup('Der Gewinner ist' + str(victor), title = "Spielende")
+    self.window.close()
+    
 
 class Singleton:
 
@@ -104,42 +110,28 @@ class Singleton:
 
 @Singleton
 class Window:
-  gameboard = [[]]
+  gameboard = []
   def __init__(self):
     self.window = self.__initWindow()
 
   def __initWindow(self) -> sg.Window:
-    textFields = []
-    c0 = []
-    c1 = []
-    c2 = []
-    c3 = []
-    c4 = []
-    c5 = []
+    
     buttons = []
     for i in range(7):
-      buttons.append(sg.Button(str(i), size=(2,None), key = "buttons"))
-    for i in range(7):
-      textFields.append(sg.Text(str(0), size=(2,None),pad=7, key = "text"))
-    column = [textFields]
-    for i in range(7):
-      c0.append(sg.Text(size=(2,None),pad=7, background_color= "white", key = "Field"))
-      c1.append(sg.Text(size=(2,None),pad=7, background_color= "white", key = "Field"))
-      c2.append(sg.Text(size=(2,None),pad=7, background_color= "white", key = "Field"))
-      c3.append(sg.Text(size=(2,None),pad=7, background_color= "white", key = "Field"))
-      c4.append(sg.Text(size=(2,None),pad=7, background_color= "white", key = "Field"))
-      c5.append(sg.Text(size=(2,None),pad=7, background_color= "white", key = "Field"))
-
-    gameboard = [c5,c4,c3,c2,c1,c0]
-    layout = [[gameboard], [buttons], [sg.Column(column, vertical_alignment='left', justification='left',  k='-C-')],[sg.Button("exit", size=(3,None))]]
+      buttons.append(sg.Button(str(i), size=(2,None)))
+    for i in range(6):
+      self.gameboard.append([])
+      for j in range(7):
+        self.gameboard[i].append(sg.Text(size=(2,None),pad=7, background_color= "white", key = "Field"))
+    layout = [[self.gameboard], [buttons]]
     
     return sg.Window("Game", layout, finalize=True)
 
-  def __updateState(self, gamestate: List[List[int]]):
+  def updateState(self, gamestate: List[List[int]]):
     color_map = {0:"white", 1:"blue", 2:"red"}
-    for i in range(6):
-      for j in range(7):
-        self.gameboard[i][j].update(background_color= color_map[gamestate[i][j]])
+    for i in range(len(self.gameboard)):
+      for j in range(len(self.gameboard[i])):
+        self.gameboard[5-i][j].update(background_color = color_map[gamestate[j][i]])
 
 
   def WaitButtonClicked(self, playerId) -> int:
@@ -147,17 +139,16 @@ class Window:
     column = 0
     while True:             # Event Loop
       event, values = self.window.Read()
-      for j in range(7):
-        if event == str(j):
-          column = j
-          #print(i)    #wrapper Move Methode hier
-          self.textFields[j](str(int(self.textFields[j].get()) + 1))
-          for i in range(6):
-            if self.gameboard[5-i][j].Widget['background'] == "white":
-              self.gameboard[5-i][j].update(background_color= color_map[playerId])
+      for i in range(7):
+        if event == str(i):
+          column = i
+          for j in range(6):
+            if self.gameboard[5-j][i].Widget['background'] == "white":
+              self.gameboard[5-j][i].update(background_color= color_map[playerId])
               break
           break
-      if event == sg.WIN_CLOSED or event == "exit":
+      if event == sg.WIN_CLOSED:
+        self.window.close()
         break
       return column
 
