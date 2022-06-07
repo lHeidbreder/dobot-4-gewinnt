@@ -51,18 +51,20 @@ class Game:
         start = last_col - offset, last_row - offset
         if (start[0] < 4 and start[1] < 4):
             for i in range(max(last_row,last_col),4):
-                if self.gamestate[start[0]+i][start[1]+i] \
+                if self.gamestate[start[0]+i][start[1]+i] > 0 \
+                    and self.gamestate[start[0]+i][start[1]+i] \
                     == self.gamestate[start[0]+i+1][start[1]+i+1] \
                     == self.gamestate[start[0]+i+2][start[1]+i+2] \
                     == self.gamestate[start[0]+i+3][start[1]+i+3]:
                     return self.gamestate[last_col][last_row]
 
         #from bottom right
-        offset:int = min(last_row, last_col)
-        start = last_col - offset, last_row + offset
+        offset:int = min(last_row, 6-last_col)
+        start = last_col + offset, last_row - offset
         if (start[0] < 4 and start[1] > 2):
-            for i in range(max(start[0], 6-start[1]), 4):
-                if self.gamestate[start[0]+i][start[1]-i] \
+            for i in range(max(start[0], start[1]), 4):
+                if self.gamestate[start[0]+i][start[1]-i] > 0 \
+                    and self.gamestate[start[0]+i][start[1]-i] \
                     == self.gamestate[start[0]+i+1][start[1]-i-1] \
                     == self.gamestate[start[0]+i+2][start[1]-i-2] \
                     == self.gamestate[start[0]+i+3][start[1]-i-3]:
@@ -87,9 +89,9 @@ class Game:
 
             row = self.gamestate[col].index(0)
             self.gamestate[col][row] = 2
-            self.__robots[0].MoveBlock(col, row)
+            self.__robots[1].MoveBlock(col, row)
             
             victor = self._determine_victory(col,row)
 
-        for i in len(self.players):
+        for i in range(len(self.players)):
             self.players[i].informEnd(victor == i)

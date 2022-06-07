@@ -80,7 +80,7 @@ class Wrapper:
 			#Befehlswarteschlange starten
 			self.DobotDLL.SetQueuedCmdStartExec(self.DobotAPI)
 			#Bring Dobot to starting position
-#			self.Home()
+			self.Home()
 			self.MoveTo(self.__homeX, self.__homeY, self.__homeZ)
 		pass
 
