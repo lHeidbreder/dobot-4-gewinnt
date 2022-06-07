@@ -1,18 +1,12 @@
 # Vier Gewinnt Minimax
+from ast import Pass
 from pickle import NONE
 from typing import List
 from random import randint
 import copy
 import PySimpleGUI as sg
 
-textFields = []
-gameboard = [[]]
-c0 = []
-c1 = []
-c2 = []
-c3 = []
-c4 = []
-c5 = []
+
 
 class Controller:
   def __init__(self):
@@ -76,83 +70,87 @@ class AIController(Controller):
 
 
 class GUIController(Controller):
+  
+
   def __init__(self, name):
     super()
-    self._name = name
-    self.window = self.__initWindow()
+    self.name = name
+    self.window = Window.Instance()
   
   def getName(self) -> str:
     return self._name
   
-  def getNextTurn(self, gamestate: List[List[int]], playerId) -> int:
+  def getNextTurn(self, playerId, gamestate: List[List[int]]) -> int:
     #TODO
-    self.__updateState(gamestate)
-    return self.WaitButtonClicked(playerId)
+    self.window.updateState(gamestate)
+    return self.window.WaitButtonClicked(playerId)
   
-  def __updateState(self, gamestate: List[List[int]]):
-    color_map = {0:"white", 1:"blue", 2:"red"}
-    for i in range(6):
-      for j in range(7):
-        gameboard[i][j].update(background_color= color_map[gamestate[i][j]])
+  def informEnd(self, victor):
+    sg.Popup('Der Gewinner ist' + str(victor), title = "Spielende")
+    self.window.close()
+    
 
-        #if gamestate[i][j] == 1:
-        #  gameboard[i][j].update(background_color= "blue")
-        #if gamestate[i][j] == 2:
-        #  gameboard[i][j].update(background_color= "red")
+class Singleton:
 
+    def __init__(self, cls):
+        self._cls = cls
 
-  
+    def Instance(self):
+        try:
+            return self._instance
+        except AttributeError:
+            self._instance = self._cls()
+            return self._instance
+
+    def __call__(self):
+        raise TypeError('Singletons must be accessed through `Instance()`.')
+
+    def __instancecheck__(self, inst):
+        return isinstance(inst, self._cls)  
+
+@Singleton
+class Window:
+  gameboard = []
+  def __init__(self):
+    self.window = self.__initWindow()
+
   def __initWindow(self) -> sg.Window:
+    
     buttons = []
     for i in range(7):
       buttons.append(sg.Button(str(i), size=(2,None)))
-    for i in range(7):
-      textFields.append(sg.Text(str(0), size=(2,None),pad=7))
-    column = [textFields]
-    for i in range(7):
-      c0.append(sg.Text(size=(2,None),pad=7, background_color= "white", key = "Field"))
-      c1.append(sg.Text(size=(2,None),pad=7, background_color= "white", key = "Field"))
-      c2.append(sg.Text(size=(2,None),pad=7, background_color= "white", key = "Field"))
-      c3.append(sg.Text(size=(2,None),pad=7, background_color= "white", key = "Field"))
-      c4.append(sg.Text(size=(2,None),pad=7, background_color= "white", key = "Field"))
-      c5.append(sg.Text(size=(2,None),pad=7, background_color= "white", key = "Field"))
-
-    global gameboard 
-    gameboard = [c5,c4,c3,c2,c1,c0]
-    layout = [[gameboard], [buttons], [sg.Column(column, vertical_alignment='left', justification='left',  k='-C-')],[sg.Button("exit", size=(3,None))]]
+    for i in range(6):
+      self.gameboard.append([])
+      for j in range(7):
+        self.gameboard[i].append(sg.Text(size=(2,None),pad=7, background_color= "white", key = "Field"))
+    layout = [[self.gameboard], [buttons]]
     
-    return sg.Window(self._name, layout, finalize=True)
+    return sg.Window("Game", layout, finalize=True)
+
+  def updateState(self, gamestate: List[List[int]]):
+    color_map = {0:"white", 1:"blue", 2:"red"}
+    for i in range(len(self.gameboard)):
+      for j in range(len(self.gameboard[i])):
+        self.gameboard[5-i][j].update(background_color = color_map[gamestate[j][i]])
+
 
   def WaitButtonClicked(self, playerId) -> int:
     color_map = {1:"blue", 2:"red"}
     column = 0
     while True:             # Event Loop
       event, values = self.window.Read()
-      for j in range(7):
-        if event == str(j):
-          column = j
-          #print(i)    #wrapper Move Methode hier
-          textFields[j](str(int(textFields[j].get()) + 1))
-          for i in range(6):
-            if gameboard[5-i][j].Widget['background'] == "white":
-              gameboard[5-i][j].update(background_color= color_map[playerId])
+      for i in range(7):
+        if event == str(i):
+          column = i
+          for j in range(6):
+            if self.gameboard[5-j][i].Widget['background'] == "white":
+              self.gameboard[5-j][i].update(background_color= color_map[playerId])
               break
           break
-      if event == sg.WIN_CLOSED or event == "exit":
+      if event == sg.WIN_CLOSED:
+        self.window.close()
         break
       return column
 
-      
-
-
-if __name__ == '__main__':
-  controller = GUIController('Name')
-  state = []
-  for i in range (7):
-    state.append([])
-  
-  #while True:
-    #print(controller.getNextTurn(state))
-   # controller.WaitButtonClicked()
     #for l in state:
      # print(l)
