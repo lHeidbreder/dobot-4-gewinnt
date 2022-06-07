@@ -28,8 +28,9 @@ class Game:
 
     def _determine_victory(self, last_col:int, last_row:int) -> int:
         #check col if necessary
-        if (last_row >= 4):
-            if self.gamestate[last_col][last_row] \
+        if (last_row >= 3):
+            if self.gamestate[i][last_row] > 0 \
+                and self.gamestate[last_col][last_row] \
                 == self.gamestate[last_col][last_row-1] \
                 == self.gamestate[last_col][last_row-2] \
                 == self.gamestate[last_col][last_row]:
@@ -37,7 +38,8 @@ class Game:
         
         #check row
         for i in range(4):
-            if self.gamestate[i][last_row] \
+            if self.gamestate[i][last_row] > 0 \
+                and self.gamestate[i][last_row] \
                 == self.gamestate[i+1][last_row] \
                 == self.gamestate[i+2][last_row] \
                 == self.gamestate[i+3][last_row]:
